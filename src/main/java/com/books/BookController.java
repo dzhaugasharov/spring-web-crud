@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BookController {
 
     @RequestMapping("/")
-    public String books(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
+    public String books(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
         model.addAttribute("name", name);
         return "index";
     }

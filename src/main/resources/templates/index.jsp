@@ -3,9 +3,12 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/resources/css/style.css" rel="stylesheet" />
+
+    <script src="/resources/js/scripts.js"></script>
 </head>
 <body>
-<h2>Форма книга</h2>
-<p th:text="'Hello, ' + ${name} + '!'" />
+    <h2>Nelly</h2>
+    <p>Hello, ${name}!</p>
 </body>
 </html>
