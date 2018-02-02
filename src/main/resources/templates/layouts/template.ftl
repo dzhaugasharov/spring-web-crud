@@ -13,12 +13,15 @@
     <script src="/resources/js/scripts.js"></script>
 </head>
 <body>
+    <section class="header">
+        <div class="container">
+        </div>
+    </section>
     <div class="container">
-        <section class="header"></section>
         <@content/>
     </div>
     <footer>
-
+    <div class="container">Books 2018</div>
     </footer>
 </body>
 </html>

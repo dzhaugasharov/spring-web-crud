@@ -1,6 +1,8 @@
 <#include "../layouts/template.ftl">
 
-
 <#macro content>
-    <h2>Index PAGE</h2>
+    <ul class="breadcrumb">
+        <li><i class="fa fa-home"></i> Главная</li>
+    </ul>
+    <h2>Книги</h2>
 </#macro>
