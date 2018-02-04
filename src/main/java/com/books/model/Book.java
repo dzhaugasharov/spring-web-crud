@@ -1,25 +1,37 @@
 package com.books.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "persons")
+@Table(name = "books")
 public class Book {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "title")
+    @NotEmpty(message = "{book.title.empty}")
     private String title;
+
     @Column(name = "author")
+    @NotEmpty(message = "{book.author.empty}")
     private String author;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "isbn")
+    @NotEmpty(message = "{book.isbn.empty}")
     private String isbn;
+
     @Column(name = "printYear")
+    @NotEmpty(message = "{book.printYear.empty}")
     private int printYear;
+
     @Column(name = "readAlready")
     private boolean readAlready;
 

@@ -1,15 +1,15 @@
 package com.books.model;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.Query;
+import org.hibernate.cfg.Configuration;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 public class BookService {
     @Resource(name="sessionFactory")
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
 
     /**
      * Retrieves all persons
@@ -20,12 +20,11 @@ public class BookService {
 
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
 
         // Create a Hibernate query (HQL)
-        Query query = session.createQuery("FROM books");
-
-        // Retrieve all
-        return  query.list();
+        List<Book> books = (List<Book>) session.createQuery("FROM Book").list();
+        return  books;
     }
 
     /**
@@ -34,12 +33,13 @@ public class BookService {
     public Book get( Integer id ) {
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-
+        Transaction transaction = session.beginTransaction();
         // Retrieve existing Book first
-        Book book = (Book) session.get(Book.class, id);
+        Book book = (Book)session.get(Book.class, id);
 
         return book;
     }
+
     /**
      * Adds a new book
      */
@@ -47,9 +47,11 @@ public class BookService {
 
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
 
         // Save
         session.save(book);
+        transaction.commit();
     }
 
     /**
@@ -60,12 +62,14 @@ public class BookService {
 
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
 
         // Retrieve existing book first
-        Book book = (Book) session.get(Book.class, id);
+        Object book = session.get(Book.class, id);
 
         // Delete
         session.delete(book);
+        transaction.commit();
     }
 
     /**

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<!--  Generated file - Do not edit! -->
+
+<hibernate-configuration>
+
+    <!-- a SessionFactory instance listed as /jndi/name -->
+    <session-factory>
+
+        <!-- User / Password -->
+        <property name="connection.username">root</property>
+        <property name="connection.password"></property>
+
+        <!-- Database Settings -->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <!-- For performance reasons changed to MyISAM from org.hibernate.dialect.MySQLInnoDBDialect -->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="connection.url">jdbc:mysql://localhost/test?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;serverTimezone=UTC</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Properties -->
+        <property name="showsql">true</property>
+        <property name="current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
+
+        <!-- Mapping files -->
+        <mapping class="com.books.model.Book"/>
+        <!--<mapping resource="hibernate/mapping/User_info.hbm.xml"/>-->
+        <!--<mapping class="com.sg.core.UserInfo"/>-->
+
+    </session-factory>
+
+</hibernate-configuration>
