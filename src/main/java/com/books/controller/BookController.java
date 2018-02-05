@@ -93,17 +93,18 @@ public class BookController {
             //Если нет 404
         }
 
+
+
         //Validate
         Map<String, String> errors = new HashMap<>();
-        if (title == "") errors.put("titleError", "Поле Название не может быть пустым!");
-        if (author == "") errors.put("authorError", "Поле Автор не может быть пустым!");
-        if (year == "") errors.put("printYearError", "Поле Год печати не может быть пустым!");
+        if (title == null || title.isEmpty()) errors.put("titleError", "Поле Название не может быть пустым!");        if (author == null || author.isEmpty()) errors.put("authorError", "Поле Автор не может быть пустым!");
+        if (year == null || year.isEmpty()) errors.put("printYearError", "Поле Год печати не может быть пустым!");
         for (Map.Entry<String, String> item : errors.entrySet()) model.addAttribute(item.getKey(), item.getValue());
         if (errors.size() > 0) return;
-        if (1 == 1) return ;
+        //if (1 == 1) return ;
 
         book.setTitle(title);
-        book.setAuthor(author);
+        book.setAuthor("ASDK");
         book.setIsbn(isbn);
         book.setDescription(description);
         book.setPrintYear(Integer.parseInt(year));

@@ -3,7 +3,7 @@
 <head>
     <title>Books - test task</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/resources/css/style.css" rel="stylesheet" />
 
@@ -17,8 +17,9 @@
         <div class="container">
         </div>
     </section>
-    <div class="container">
-        <@content/>
+    <div class="container" style="margin-top: 15px">
+
+            <@content/>
     </div>
     <footer>
     <div class="container">Books 2018</div>
