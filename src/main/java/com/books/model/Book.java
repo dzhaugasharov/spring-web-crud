@@ -35,6 +35,10 @@ public class Book {
     @Column(name = "readAlready")
     private boolean readAlready;
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

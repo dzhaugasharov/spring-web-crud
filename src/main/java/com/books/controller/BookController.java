@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +18,23 @@ import java.util.Map;
 public class BookController {
 
     @RequestMapping("/")
-    public ModelAndView books(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
-        model.addAttribute("name", name);
+    public ModelAndView books(Model model,
+                              @RequestParam(value="title", required=false, defaultValue="") String title,
+                              @RequestParam(value="readAlready", required=false, defaultValue="0") String readAlready,
+                              @RequestParam(value="page", required=false, defaultValue="1") int page) {
+        model.addAttribute("title", title);
+        model.addAttribute("readAlready", readAlready);
 
         BookService bookService = new BookService();
-        List<Book> books = bookService.getAll();
+        List<Book> books = bookService.getBooks(page, title, readAlready);
         model.addAttribute("books", books);
+        model.addAttribute("total", bookService.getTotal());
+        model.addAttribute("totalPages", bookService.getPagesCount());
+        model.addAttribute("page", page);
+
+        model.addAttribute("one", readAlready.equals("0") ? "selected='selected'" : "");
+        model.addAttribute("two", readAlready.equals("1") ? "selected='selected'" : "");
+
 
         return new ModelAndView("pages/index");
     }
@@ -71,14 +81,14 @@ public class BookController {
 
         //Получение книги
         BookService bookService = new BookService();
-        //Book book = bookService.get(id);
+        Book book = bookService.get(id);
 
-        model.addAttribute("id", id);
-        model.addAttribute("title", title);
-        model.addAttribute("author", author);
-        model.addAttribute("isbn", isbn);
-        model.addAttribute("printYear", printYear);
-        model.addAttribute("description", description);
+        model.addAttribute("id", book.getId());
+        model.addAttribute("title", book.getTitle());
+        model.addAttribute("author", book.getAuthor());
+        model.addAttribute("isbn", book.getIsbn());
+        model.addAttribute("printYear", book.getPrintYear());
+        model.addAttribute("description", book.getDescription());
 
         return new ModelAndView("pages/form");
     }
@@ -93,8 +103,6 @@ public class BookController {
             //Если нет 404
         }
 
-
-
         //Validate
         Map<String, String> errors = new HashMap<>();
         if (title == null || title.isEmpty()) errors.put("titleError", "Поле Название не может быть пустым!");        if (author == null || author.isEmpty()) errors.put("authorError", "Поле Автор не может быть пустым!");
@@ -104,7 +112,7 @@ public class BookController {
         //if (1 == 1) return ;
 
         book.setTitle(title);
-        book.setAuthor("ASDK");
+        book.setAuthor(author);
         book.setIsbn(isbn);
         book.setDescription(description);
         book.setPrintYear(Integer.parseInt(year));
