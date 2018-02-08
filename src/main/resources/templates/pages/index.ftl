@@ -30,25 +30,25 @@
             </form>
             <table class="table table-bordered table-stripped">
                 <thead>
-                    <th>ID</th>
+                    <th style="width: 55px">ID</th>
                     <th>Название</th>
-                    <th>Автор</th>
+                    <th style="width: 120px">Автор</th>
                     <th>Описание</th>
-                    <th>ISBN</th>
-                    <th>Год печати</th>
-                    <th>Прочитана</th>
-                    <th></th>
+                    <th style="width: 100px">ISBN</th>
+                    <th style="width: 100px">Год печати</th>
+                    <th style="width: 110px">Прочитана</th>
+                    <th style="width: 65px"></th>
                 </thead>
                 <tbody>
                     <#list books as book>
-                    <tr>
+                    <tr class="book-${book.id}">
                         <td>${book.id}</td>
                         <td>${book.title}</td>
-                        <td>${book.author}</td>
-                        <td>${book.description}</td>
-                        <td>${book.isbn}</td>
+                        <td><#if book.author??>${book.author}</#if></td>
+                        <td><#if book.description??>${book.description}</#if></td>
+                        <td><#if book.isbn??>${book.isbn}</#if></td>
                         <td>${book.printYear}</td>
-                        <td>
+                        <td class="status-col <#if book.isReadAlready()> text-success </#if>">
                             <#if book.isReadAlready()>
                                 прочитана
                             <#else>
@@ -56,6 +56,11 @@
                             </#if>
                         </td>
                         <td align="right">
+                            <#assign statusIcon = "fa-eye" >
+                            <#if book.isReadAlready()>
+                                <#assign statusIcon = "fa-eye-slash" >
+                            </#if>
+                            <a href="#" onclick="Book.readAlready(${book.id});return false" title="Изменить статус"><i class="fa status-btn-icn ${statusIcon}"></i></a>
                             <a href="/edit?id=${book.id}" title="Редактировать"><i class="fa fa-edit"></i></a>
                             <a href="#" onclick="Book.remove(${book.id});return false" title="Удалить"><i class="fa fa-remove"></i></a>
                         </td>
@@ -69,9 +74,16 @@
                 <ul class="pagination pagination-sm">
                     <#assign prevPage=page-1 >
                     <#assign nextPage=page+1 >
+                    <#assign ra="" ttl="" >
+                    <#if readAlready??>
+                        <#assign ra="&readAlready="+readAlready >
+                    </#if>
+                    <#if title??>
+                        <#assign ttl="&title="+title >
+                    </#if>
                     <li>
                         <#if (prevPage > 0)>
-                        <a href="?page=${prevPage}">«</a>
+                        <a href="?page=${prevPage+ra+ttl}">«</a>
                         <#else>
                         <span>«</span>
                         </#if>
@@ -80,12 +92,12 @@
                         <#if (page == i)>
                         <li class="active"><span>${i}</span></li>
                         <#else>
-                        <li><a href="?page=${i}">${i}</a></li>
+                        <li><a href="?page=${i+ra+ttl}">${i}</a></li>
                         </#if>
                     </#list>
                     <li>
                         <#if (nextPage <= totalPages)>
-                        <a href="?page=${nextPage}">»</a>
+                        <a href="?page=${nextPage+ra+ttl}">»</a>
                         <#else>
                         <span>»</span>
                         </#if>

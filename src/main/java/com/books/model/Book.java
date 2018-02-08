@@ -14,22 +14,18 @@ public class Book {
     private int id;
 
     @Column(name = "title")
-    @NotEmpty(message = "{book.title.empty}")
     private String title;
 
     @Column(name = "author")
-    @NotEmpty(message = "{book.author.empty}")
     private String author;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "isbn")
-    @NotEmpty(message = "{book.isbn.empty}")
     private String isbn;
 
     @Column(name = "printYear")
-    @NotEmpty(message = "{book.printYear.empty}")
     private int printYear;
 
     @Column(name = "readAlready")
@@ -55,8 +51,8 @@ public class Book {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthor(String auth) {
+        author = (String) auth;
     }
 
     public String getDescription() {

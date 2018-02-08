@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class BookController {
@@ -20,7 +22,7 @@ public class BookController {
     @RequestMapping("/")
     public ModelAndView books(Model model,
                               @RequestParam(value="title", required=false, defaultValue="") String title,
-                              @RequestParam(value="readAlready", required=false, defaultValue="0") String readAlready,
+                              @RequestParam(value="readAlready", required=false, defaultValue="") String readAlready,
                               @RequestParam(value="page", required=false, defaultValue="1") int page) {
         model.addAttribute("title", title);
         model.addAttribute("readAlready", readAlready);
@@ -35,12 +37,11 @@ public class BookController {
         model.addAttribute("one", readAlready.equals("0") ? "selected='selected'" : "");
         model.addAttribute("two", readAlready.equals("1") ? "selected='selected'" : "");
 
-
         return new ModelAndView("pages/index");
     }
 
     @RequestMapping(value = "/add")
-    public ModelAndView add(Model model,
+    public String add(Model model,
         @RequestParam(value="title", required=false, defaultValue = "") String title,
         @RequestParam(value="author", required=false, defaultValue = "") String author,
         @RequestParam(value="isbn", required=false, defaultValue = "") String isbn,
@@ -57,9 +58,9 @@ public class BookController {
         model.addAttribute("description", description);
         if (submit != null && !submit.isEmpty())
         {
-            save(null,title,author,isbn,printYear,description,model);
+            if (save(null,title,author,isbn,printYear,description,model)) return "redirect:/";
         }
-        return new ModelAndView("pages/form");
+        return "pages/form";
     }
 
     @RequestMapping("/edit")
@@ -87,32 +88,42 @@ public class BookController {
         model.addAttribute("title", book.getTitle());
         model.addAttribute("author", book.getAuthor());
         model.addAttribute("isbn", book.getIsbn());
-        model.addAttribute("printYear", book.getPrintYear());
+        model.addAttribute("printYear", String.valueOf(book.getPrintYear()));
         model.addAttribute("description", book.getDescription());
 
         return new ModelAndView("pages/form");
     }
 
-    public void save(Integer id, String title, String author, String isbn,
+    public boolean save(Integer id, String title, String author, String isbn,
                              String year, String description, Model model)
     {
         BookService bookService = new BookService();
         Book book = new Book();
         if (id != null) {
-            book = (Book) bookService.get(id);
+            book = bookService.get(id);
             //Если нет 404
+            //return false;
         }
 
         //Validate
         Map<String, String> errors = new HashMap<>();
         if (title == null || title.isEmpty()) errors.put("titleError", "Поле Название не может быть пустым!");        if (author == null || author.isEmpty()) errors.put("authorError", "Поле Автор не может быть пустым!");
         if (year == null || year.isEmpty()) errors.put("printYearError", "Поле Год печати не может быть пустым!");
+        else{
+            Pattern pattern = Pattern.compile("^\\d{4}$");
+            Matcher matcher = pattern.matcher(year);
+            if (!matcher.find())
+            {
+                errors.put("printYearError", "Поле Год печати заполнено не по формату!");
+            }
+        }
+
         for (Map.Entry<String, String> item : errors.entrySet()) model.addAttribute(item.getKey(), item.getValue());
-        if (errors.size() > 0) return;
+        if (errors.size() > 0) return false;
         //if (1 == 1) return ;
 
         book.setTitle(title);
-        book.setAuthor(author);
+        //book.setAuthor(author);
         book.setIsbn(isbn);
         book.setDescription(description);
         book.setPrintYear(Integer.parseInt(year));
@@ -125,14 +136,31 @@ public class BookController {
         model.addAttribute("isbn", isbn);
         model.addAttribute("description", description);
         model.addAttribute("printYear", year);
+
+        model.addAttribute("success", true);
+        return true;
     }
 
-    @RequestMapping(value = "/removebook", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/ajax", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String remove(Model model, @RequestParam(value="id") Integer id)
+    public String ajax(Model model, @RequestParam(value="id") Integer id, @RequestParam(value="action") String action)
     {
         BookService bookService = new BookService();
-        bookService.delete(id);
-        return "{\"success\": true}";
+        String json = "";
+        switch (action)
+        {
+            case "read_already":
+                Book book = bookService.get(id);
+                book.setReadAlready(book.isReadAlready() ? false : true);
+                bookService.edit(book);
+                json = "{\"success\": true, \"readAlready\": "+book.isReadAlready()+"}";
+                break;
+
+            case "delete":
+                bookService.delete(id);
+                json = "{\"success\": true}";
+                break;
+        }
+        return json;
     }
 }

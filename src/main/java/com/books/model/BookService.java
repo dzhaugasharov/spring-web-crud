@@ -5,6 +5,8 @@ import org.hibernate.Query;
 import org.hibernate.cfg.Configuration;
 
 import javax.annotation.Resource;
+import java.lang.InstantiationException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,22 +84,47 @@ public class BookService {
     /**
      * Retrieves a single book
      */
-    public com.books.model.Book get( Integer id ) {
+    public Book get( Integer id ) {
+
+        //Это у меня не работало: cannot cast Book to Book
         // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
+        /*Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-
-        Query query = session.createQuery("FROM Book WHERE id = :id");
-        query.setInteger("id", id);
-        List<com.books.model.Book> books = (List<Book>) query.list();
-        com.books.model.Book book = new com.books.model.Book();
-        book.setId(books.get(0).getId());
-        book.setTitle(books.get(0).getTitle());
-        return book;
-
         // Retrieve existing Book first
         //Book book = (Book)session.get(Book.class, id);
         //return book;
+        */
+
+        try {
+            return getAlternative(id);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    private Book getAlternative(int id) throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&serverTimezone=UTC", "root", "");
+
+        Statement st = con.createStatement();
+        String sql = ("SELECT * FROM books WHERE id = "+id+";");
+        ResultSet rs = st.executeQuery(sql);
+        Book book = new Book();
+        if (rs.next()) {
+            book.setId(rs.getInt("id"));
+            book.setTitle(rs.getString("title"));
+            book.setAuthor(rs.getString("author"));
+            book.setDescription(rs.getString("description"));
+            book.setIsbn(rs.getString("isbn"));
+            book.setPrintYear(rs.getInt("printYear"));
+            book.setReadAlready(rs.getInt("readAlready") == 1);
+        }
+
+        con.close();
+        return book;
     }
 
     /**
@@ -147,16 +174,32 @@ public class BookService {
 
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
 
-        // Retrieve existing book via id
-        Book existingBook = (Book) session.get(Book.class, book.getId());
+        Query query = session.createSQLQuery("UPDATE books " +
+                "SET title =:title, author = :author, description = :description, isbn = :isbn, printYear = :printYear, readAlready = :readAlready " +
+                "WHERE id = :id");
+        query.setParameter("id", book.getId());
+        query.setParameter("title", book.getTitle());
+        query.setParameter("author", book.getAuthor());
+        query.setParameter("description", book.getDescription());
+        query.setParameter("isbn", book.getIsbn());
+        query.setParameter("printYear", book.getPrintYear());
+        query.setParameter("readAlready", book.isReadAlready());
+        query.executeUpdate();
 
+        //Это не работает ((
+        /*// Retrieve existing book via id
+        Book existingBook = get(book.getId());
         // Assign updated values to this book
         existingBook.setTitle(book.getTitle());
-        existingBook.setAuthor(existingBook.getAuthor());
-        existingBook.setIsbn(existingBook.getIsbn());
-
+        //existingBook.setAuthor(book.getAuthor());
+        existingBook.setDescription(book.getDescription());
+        existingBook.setIsbn(book.getIsbn());
+        existingBook.setPrintYear(book.getPrintYear());
+        existingBook.setReadAlready(book.isReadAlready());
         // Save updates
-        session.save(existingBook);
+        session.save(existingBook);*/
+        transaction.commit();
     }
 }
