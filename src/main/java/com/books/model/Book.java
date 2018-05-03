@@ -1,17 +1,15 @@
 package com.books.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "books")
-public class Book {
+@NamedQueries({
+        @NamedQuery(name = Book.GET_ALL, query = "SELECT b FROM Book b")
+})
+public class Book extends AbstractBaseEntity {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    public final static String GET_ALL = "Book.getAll";
 
     @Column(name = "title")
     private String title;
@@ -31,14 +29,6 @@ public class Book {
     @Column(name = "readAlready")
     private boolean readAlready;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -52,7 +42,7 @@ public class Book {
     }
 
     public void setAuthor(String auth) {
-        author = (String) auth;
+        author = auth;
     }
 
     public String getDescription() {
@@ -85,5 +75,18 @@ public class Book {
 
     public void setReadAlready(boolean readAlready) {
         this.readAlready = readAlready;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", printYear=" + printYear +
+                ", readAlready=" + readAlready +
+                ", id=" + id +
+                '}';
     }
 }

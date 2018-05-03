@@ -1,6 +1,6 @@
-package com.books.controller;
+package com.books.web;
 
-import com.books.model.Book;
+/*import com.books.model.Book;
 import com.books.model.BookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.Pattern;*/
 
-@Controller
+//@Controller
 public class BookController {
 
-    @RequestMapping("/")
+    /*@RequestMapping("/")
     public ModelAndView books(Model model,
                               @RequestParam(value="title", required=false, defaultValue="") String title,
                               @RequestParam(value="readAlready", required=false, defaultValue="") String readAlready,
@@ -162,5 +162,5 @@ public class BookController {
                 break;
         }
         return json;
-    }
+    }*/
 }
