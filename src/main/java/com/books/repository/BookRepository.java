@@ -11,7 +11,7 @@ public interface BookRepository {
 
     public Book save(Book book);
 
-    public List<Book> getAll();
+    public List getAll();
 
     public boolean delete(Book book);
 }

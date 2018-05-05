@@ -2,17 +2,19 @@ package com.books.repository.jpa;
 
 import com.books.model.Book;
 import com.books.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+//@Transactional
+@EnableTransactionManagement
 public class JpaBookRepositoryImpl implements BookRepository {
 
-    @PersistenceContext(unitName = "entityManagerFactory")
+    @PersistenceContext
     EntityManager em;
 
     @Override
@@ -21,6 +23,7 @@ public class JpaBookRepositoryImpl implements BookRepository {
     }
 
     @Override
+    @Transactional
     public Book save(Book book) {
         if (book.isNew())
         {
@@ -38,8 +41,9 @@ public class JpaBookRepositoryImpl implements BookRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(Book book) {
-        em.remove(book);
+        em.remove(em.contains(book) ? book : em.merge(book));
         return true;
     }
 }

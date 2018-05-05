@@ -19,7 +19,11 @@
             <tr>
                 <th>ID</th>
                 <th>Book</th>
+                <th>Author</th>
                 <th>Description</th>
+                <th>ISBN</th>
+                <th>Print Year</th>
+                <th>Read Already</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -28,7 +32,10 @@
                 <tr>
                     <td>${book.getId()}</td>
                     <td>${book.getTitle()}</td>
-                    <td>${book.getDescription()}</td>
+                    <td>${book.getAuthor()}</td>
+                    <td>${book.getIsbn()}</td>
+                    <td>${book.getPrintYear()}</td>
+                    <td>${book.isReadAlready()}</td>
                     <td><a href="books?action=update&id=${book.getId()}">Update</a></td>
                     <td><a href="books?action=delete&id=${book.getId()}">Delete</a></td>
                 </tr>
