@@ -23,7 +23,7 @@ public class BookServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext("spring-app.xml");
+        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
         bookRepository = springContext.getBean(BookRepository.class);
         bookService = springContext.getBean(BookService.class);
     }
@@ -47,24 +47,23 @@ public class BookServlet extends HttpServlet {
         switch (action) {
             case "create":
             case "update":
-                int id = getId(request);
-                Book book = "create".equals(action) ? new Book() : bookRepository.get(id);
+                Book book = "create".equals(action) ? new Book() : bookRepository.get(getId(request));
                 if (book == null) {
                     //404
                 }
                 request.setAttribute("book", book);
-                request.getRequestDispatcher("/form.jsp").forward(request, response);
+                request.getRequestDispatcher("/jsp/form.jsp").forward(request, response);
                 break;
 
-        case "delete":
-            Book delBook = bookRepository.get(getId(request));
-            bookRepository.delete(delBook);
-            response.sendRedirect("/");
-            break;
+            case "delete":
+                Book delBook = bookRepository.get(getId(request));
+                bookRepository.delete(delBook);
+                response.sendRedirect("/");
+                break;
 
             default:
                 request.setAttribute("books", bookRepository.getAll());
-                request.getRequestDispatcher("/books.jsp").forward(request, response);
+                request.getRequestDispatcher("/jsp/books.jsp").forward(request, response);
                 break;
         }
     }

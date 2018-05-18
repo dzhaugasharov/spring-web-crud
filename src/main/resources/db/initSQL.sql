@@ -10,7 +10,7 @@ CREATE TABLE `books` (
 	`author` VARCHAR(250) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
 	`description` TEXT NULL COLLATE 'utf8_unicode_ci',
 	`isbn` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`printYear` YEAR NULL DEFAULT NULL,
+	`printYear` INT(4) NULL DEFAULT NULL,
 	`readAlready` VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
 	PRIMARY KEY (`id`)
 )

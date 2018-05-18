@@ -1,30 +1,32 @@
 package com.books.web;
 
-/*import com.books.model.Book;
-import com.books.model.BookService;
+import com.books.model.Book;
+import com.books.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;*/
 
-//@Controller
+@Controller
 public class BookController {
 
-    /*@RequestMapping("/")
-    public ModelAndView books(Model model,
+    @Autowired
+    private BookService bookService;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String books(Model model/*,
                               @RequestParam(value="title", required=false, defaultValue="") String title,
                               @RequestParam(value="readAlready", required=false, defaultValue="") String readAlready,
-                              @RequestParam(value="page", required=false, defaultValue="1") int page) {
-        model.addAttribute("title", title);
+                              @RequestParam(value="page", required=false, defaultValue="1") int page*/) {
+
+        List books = bookService.getAll();
+        model.addAttribute("books", books);
+
+
+        /*model.addAttribute("title", title);
         model.addAttribute("readAlready", readAlready);
 
         BookService bookService = new BookService();
@@ -35,12 +37,19 @@ public class BookController {
         model.addAttribute("page", page);
 
         model.addAttribute("one", readAlready.equals("0") ? "selected='selected'" : "");
-        model.addAttribute("two", readAlready.equals("1") ? "selected='selected'" : "");
+        model.addAttribute("two", readAlready.equals("1") ? "selected='selected'" : "");*/
 
-        return new ModelAndView("pages/index");
+        return "books";
+        //return new ModelAndView("pages/index");
     }
 
-    @RequestMapping(value = "/add")
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String hello(Model model) {
+        model.addAttribute("message", "Hello World!");
+        return "hello";
+    }
+
+    /*@RequestMapping(value = "/add")
     public String add(Model model,
         @RequestParam(value="title", required=false, defaultValue = "") String title,
         @RequestParam(value="author", required=false, defaultValue = "") String author,

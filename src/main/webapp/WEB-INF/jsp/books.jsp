@@ -13,6 +13,7 @@
 </head>
 <body>
     <h2>Books</h2>
+    <a href="?action=create">Добавить</a>
     <section>
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
@@ -33,6 +34,7 @@
                     <td>${book.getId()}</td>
                     <td>${book.getTitle()}</td>
                     <td>${book.getAuthor()}</td>
+                    <td>${book.getDescription()}</td>
                     <td>${book.getIsbn()}</td>
                     <td>${book.getPrintYear()}</td>
                     <td>${book.isReadAlready()}</td>

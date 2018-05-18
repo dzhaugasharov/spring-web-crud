@@ -20,7 +20,7 @@
         <div class="panel-body">
             <h2>Форма книга</h2>
             <form action="" method="post">
-                <input type="hidden" name="id" value="${book.getId()}</#if>"/>
+                <input type="hidden" name="id" value="${book.getId()}"/>
                 <div class="form-group">
                     <label>Название книги</label>
                     <input name="title" value="${book.getTitle()}" class="form-control"/>

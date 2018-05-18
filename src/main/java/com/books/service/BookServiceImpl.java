@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -18,5 +19,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book save(Book book) {
         return bookRepository.save(book);
+    }
+
+    @Override
+    public List getAll() {
+        return bookRepository.getAll();
     }
 }
