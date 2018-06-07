@@ -4,15 +4,33 @@
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <!--
+    Path info
+    classpath: = resources/
+    / = webapp/
+    -->
+
     <display-name>Books</display-name>
 
     <!--Spring web MVC-->
+    <context-param><!--It will be parent context-->
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:spring/spring-db.xml
+            classpath:spring/spring-app.xml
+        </param-value><!--You can specify several-->
+    </context-param>
+    <!--Heew! Important thing-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--Single entry point-->
     <servlet>
-        <servlet-name>mvc-dispatcher</servlet-name>
+        <servlet-name>mvc-dispatcher</servlet-name><!--Child context. Has access to parent context-->
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>WEB-INF/spring-web-config.xml</param-value>
+            <param-value>classpath:spring/spring-mvc.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -21,27 +39,37 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <context-param>
+
+    <!--Spring WEB-->
+    <!--<context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>WEB-INF/spring-web-config.xml</param-value>
+        <param-value>classpath:spring/spring-db.xml</param-value>
     </context-param>
 
-    <!--<listener>
-        <listener-class>
-            org.springframework.web.context.ContextLoaderListener
-        </listener-class>
-    </listener>-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
-
-    <!--Servlet-->
-    <!--<servlet>
+    <servlet>
         <servlet-name>bookServlet</servlet-name>
         <servlet-class>com.books.web.BookServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>bookServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/books</url-pattern>
     </servlet-mapping>-->
 
+
+
+    <!--JAVA Servlets-->
+    <!--<servlet>-->
+        <!--<servlet-name>bookServlet</servlet-name>-->
+        <!--<servlet-class>com.books.web.BookServlet</servlet-class>-->
+        <!--<load-on-startup>0</load-on-startup>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>bookServlet</servlet-name>-->
+        <!--<url-pattern>/books</url-pattern>-->
+    <!--</servlet-mapping>-->
 </web-app>

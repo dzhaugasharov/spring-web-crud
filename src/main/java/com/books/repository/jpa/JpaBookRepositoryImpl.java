@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-//@Transactional
 @EnableTransactionManagement
 public class JpaBookRepositoryImpl implements BookRepository {
 

@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface BookRepository {
 
-    public Book get(int id);
+    Book get(int id);
 
-    public Book save(Book book);
+    Book save(Book book);
 
-    public List getAll();
+    List getAll();
 
-    public boolean delete(Book book);
+    boolean delete(Book book);
 }

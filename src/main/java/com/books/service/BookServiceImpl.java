@@ -25,4 +25,14 @@ public class BookServiceImpl implements BookService {
     public List getAll() {
         return bookRepository.getAll();
     }
+
+    @Override
+    public Book get(int id) {
+        return bookRepository.get(id);
+    }
+
+    @Override
+    public boolean delete(Book book) {
+        return bookRepository.delete(book);
+    }
 }

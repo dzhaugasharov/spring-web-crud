@@ -8,6 +8,9 @@ public interface BookService {
 
     Book save(Book book);
 
-    public List getAll();
+    List getAll();
 
+    Book get(int id);
+
+    boolean delete(Book book);
 }

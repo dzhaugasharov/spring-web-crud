@@ -7,15 +7,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
-<head>
-    <title>Books</title>
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
+    <jsp:include page="fragments/bodyHead.jsp"/>
+
     <h2>Books</h2>
-    <a href="?action=create">Добавить</a>
+    <a href="/add">Добавить</a>
     <section>
-        <table border="1" cellpadding="8" cellspacing="0">
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th>ID</th>
@@ -30,19 +31,21 @@
             </tr>
             </thead>
             <c:forEach items="${books}" var="book">
+                <jsp:useBean id="book" scope="page" type="com.books.model.Book"/>
                 <tr>
-                    <td>${book.getId()}</td>
-                    <td>${book.getTitle()}</td>
-                    <td>${book.getAuthor()}</td>
-                    <td>${book.getDescription()}</td>
+                    <td><c:out value="${book.getId()}"/></td>
+                    <td>${book.title}</td><%--just field name--%>
+                    <td>${book.author}</td>
+                    <td><%=book.getDescription()%></td>
                     <td>${book.getIsbn()}</td>
                     <td>${book.getPrintYear()}</td>
                     <td>${book.isReadAlready()}</td>
-                    <td><a href="books?action=update&id=${book.getId()}">Update</a></td>
+                    <td><a href="edit/${book.getId()}">Edit</a></td>
                     <td><a href="books?action=delete&id=${book.getId()}">Delete</a></td>
                 </tr>
             </c:forEach>
         </table>
     </section>
+    <jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
