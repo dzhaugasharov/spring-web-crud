@@ -1,12 +1,17 @@
 package com.books.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import javax.persistence.*;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @Entity
 @Table(name = "books")
 @NamedQueries({
         @NamedQuery(name = Book.GET_ALL, query = "SELECT b FROM Book b")
 })
+@JsonAutoDetect(fieldVisibility = ANY, isGetterVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE)
 public class Book extends AbstractBaseEntity {
 
     public final static String GET_ALL = "Book.getAll";

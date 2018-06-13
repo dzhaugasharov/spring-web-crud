@@ -156,6 +156,8 @@ public class BookController {
         model.addAttribute("description", description);
         model.addAttribute("printYear", year);
 
+        bookService.save(book);
+
         model.addAttribute("success", true);
         return true;
     }

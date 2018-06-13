@@ -5,7 +5,7 @@
   Time: 10:24
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
@@ -13,7 +13,7 @@
 <body>
     <jsp:include page="fragments/bodyHead.jsp"/>
     <ul class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home"></i> Главная</a></li>
+        <li><a href="/"><i class="fa fa-home"></i> <fmt:message key="app.home"/></a></li>
         <li><i class="fa fa-book"></i> Форма</li>
     </ul>
 
@@ -23,7 +23,7 @@
             <form action="" method="post">
                 <input type="hidden" name="id" value="${book.getId()}"/>
                 <div class="form-group${errors.containsKey('title') ? " has-error" : ""}">
-                    <label>Название книги</label>
+                    <label><fmt:message key="app.book_title"/></label>
                     <input name="title" value="${book.getTitle()}" class="form-control"/>
                     <div class="error-block">
                         <c:if test="${errors.containsKey('title')}">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-group${errors.containsKey('description') ? " has-error" : ""}">
-                    <label>Краткое описание</label>
+                    <label><fmt:message key="app.book_description"/></label>
                     <textarea name="description" class="form-control">${book.getDescription()}</textarea>
                     <div class="help-block">
                         <c:if test="${errors.containsKey('description')}">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="form-group${errors.containsKey('author') ? " has-error" : ""}">
-                    <label>Автор</label>
+                    <label><fmt:message key="app.book_author"/></label>
                     <input name="author" value="${book.getAuthor()}" class="form-control"/>
                     <div class="help-block">
                         <c:if test="${errors.containsKey('author')}">
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                     <div class="form-group col-md-4${errors.containsKey('printYear') ? " has-error" : ""}">
-                        <label>Год</label>
+                        <label><fmt:message key="app.book_print_year"/></label>
                         <input name="printYear" value="${book.getPrintYear()}" class="form-control"/>
                         <div class="help-block">
                             <c:if test="${errors.containsKey('printYear')}">
@@ -90,8 +90,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="submit" name="submit" value="Отправить" class="btn btn-primary"/>
-                    <a href="/" class="btn btn-default">Отмена</a>
+                    <input type="submit" name="submit" value="<fmt:message key="app.submit"/>" class="btn btn-primary"/>
+                    <a href="/" class="btn btn-default"><fmt:message key="app.cancel"/></a>
                 </div>
             </form>
         </div>
