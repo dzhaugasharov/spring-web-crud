@@ -18,6 +18,9 @@
     <div class="panel-body">
         <h2><fmt:message key="app.books"/></h2>
         <a href="/add"><fmt:message key="app.add_book"/></a>
+        <a data-target="#bookModal" data-toggle="modal"><fmt:message key="app.add_book"/> (AJAX)</a>
+
+
         <section>
             <table class="table table-bordered">
                 <thead>
@@ -53,6 +56,8 @@
         </section>
     </div>
 </div>
+
+<div id="bookModal"></div>
 
 <div class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

@@ -9,5 +9,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--<fmt:setBundle basename="messages.app"/>--%>
 <header>
-    <a href="${pageContext.request.contextPath}/"><fmt:message key="app.home"/></a>
+    <nav class="navbar navbar-inverse">
+        <a href="${pageContext.request.contextPath}/"><fmt:message key="app.home"/></a>
+    </nav>
 </header>
